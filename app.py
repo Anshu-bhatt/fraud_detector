@@ -26,18 +26,8 @@ with col2:
 st.divider()
 
 if st.button("🔎 Check Transaction", use_container_width=True):
-    # Build one-hot encoded features
-    features = [amount, merchant_id, hour, day]
-
-    # One-hot encode transaction type (all categories from le1)
-    for cat in le1.classes_:
-        features.append(1 if cat == transaction_type else 0)
-
-    # One-hot encode location (all categories from le2)
-    for cat in le2.classes_:
-        features.append(1 if cat == location else 0)
-
-    input_data = np.array([features])
+    # Scaler expects only 4 numeric features
+    input_data = np.array([[amount, merchant_id, hour, day]])
     input_scaled = scaler.transform(input_data)
     prob         = rf.predict_proba(input_scaled)[0][1]
     prediction   = rf.predict(input_scaled)[0]
