@@ -9,6 +9,12 @@ le1     = joblib.load('le_transaction_type.pkl')
 le2     = joblib.load('le_location.pkl')
 
 st.set_page_config(page_title="Fraud Detector", page_icon="🔍", layout="centered")
+
+# Display model info in sidebar
+with st.sidebar:
+    st.markdown("### 🤖 Model Information")
+    st.info(f"**Model**: Random Forest Classifier\n\n**Features**: Amount, Merchant ID, Hour, Day of Week")
+
 st.title("🔍 Credit Card Fraud Detection")
 st.markdown("Enter transaction details to check if it's **Fraud or Legit**")
 st.divider()
@@ -41,4 +47,19 @@ if st.button("🔎 Check Transaction", use_container_width=True):
     st.markdown("#### Fraud Probability")
     st.progress(float(prob))
     st.caption(f"{prob*100:.2f}% chance of fraud")
+
+    # Show model details
+    with st.expander("📊 Model Details"):
+        st.markdown("""
+        **Model Used**: Random Forest Classifier
+
+        **Input Features**:
+        - Transaction Amount (₹)
+        - Merchant ID
+        - Hour of Transaction
+        - Day of Week
+
+        **Output**: Fraud Probability (0-100%)
+        """)
+
 
