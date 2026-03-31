@@ -32,12 +32,8 @@ with col2:
 st.divider()
 
 if st.button("🔎 Check Transaction", use_container_width=True):
-    # Encode categorical features using the loaded label encoders
-    t_encoded = le1.transform([transaction_type])[0]
-    l_encoded = le2.transform([location])[0]
-
-    # Use all 6 features (same as training script)
-    input_data = np.array([[amount, merchant_id, t_encoded, l_encoded, hour, day]])
+    # The scaler expects only 4 numeric features
+    input_data = np.array([[amount, merchant_id, hour, day]])
     input_scaled = scaler.transform(input_data)
 
     prob = rf.predict_proba(input_scaled)[0][1]
@@ -61,14 +57,12 @@ if st.button("🔎 Check Transaction", use_container_width=True):
         **Input Features Used**:
         - Transaction Amount: {amount}
         - Merchant ID: {merchant_id}
-        - Transaction Type (encoded): {t_encoded}
-        - Location (encoded): {l_encoded}
         - Hour: {hour}
         - Day of Week: {day}
 
         **Model Output**:
         - Fraud Probability: {prob*100:.2f}%
-        - Prediction: {'Fraud (1)' if prediction == 1 else 'Legit (0)'}
+        - Prediction: {'⚠️ Fraud (1)' if prediction == 1 else '✅ Legit (0)'}
         """)
 
 
